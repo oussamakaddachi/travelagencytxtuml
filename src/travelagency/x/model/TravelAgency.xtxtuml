@@ -1,0 +1,125 @@
+package travelagency.x.model;
+
+import java.util.Date;
+
+signal logininf;
+
+
+
+class Agency {
+	int agency_id;
+	String name;
+	
+}
+class Register{
+	int cos_id;
+	String cos_name;
+	String password;
+}
+
+class Login {
+	int cos_id;
+	String password;
+	
+	initial init ; 
+	state waitforid;
+	state waitforpd;
+	state complete;
+	
+	transition waitfirstinp {
+		from init ;
+		to waitforid;
+		} 
+	
+	transition waitsecinp {
+		from waitforid ;
+		to waitforpd;
+		trigger logininf;
+		effect {
+			log("waiting for second input");
+		}	
+	} 	
+	 
+	 transition finish {
+		from waitforpd;
+		to complete;
+		trigger logininf;
+		effect{
+			log ("verification of id and pwd");
+		}
+		}
+	 
+}
+
+class Reserv  {
+	int res_id;
+	int cos_id;
+	
+}
+
+class Airlains extends Reservation_details {
+	int air_id;
+	String name;
+	boolean av ;
+}
+class Car extends Reservation_details {
+	int car_id;
+	String type;
+	boolean av ; 
+}
+class Hotel extends Reservation_details
+  {
+	int hot_id;
+	String name;
+	String type ;
+	String adress ;
+	boolean av ;
+}
+class Restaurant extends Reservation_details  {
+	int rest_id;
+	String name;
+	String adress ;
+}
+
+class Costumer {
+	int cos_id;
+	String name ;
+	String adress;
+	 
+}
+
+class Reservation_details {
+	int res_id;
+	int cos_id;
+	}
+
+association agencyhascostumers {
+	1 Agency agency;
+	* Costumer costumer;  
+}
+
+association costemerregister {
+	1 Costumer costumer;
+	1 Register register;  
+}
+
+association costemerlogin {
+	1 Costumer costumer;
+	1 Login login;  
+}
+
+association costemerreserv {
+	1 Costumer costumer;
+	* Reserv reserv;  
+}
+
+association details {
+	1 Reserv reserv;
+	* Reservation_details reservation_details;  
+}
+
+association control  {
+	1 Agency agency;
+	* Reservation_details reservation_details;  
+}
+
